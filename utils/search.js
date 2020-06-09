@@ -17,9 +17,9 @@ async function getSearch(query) {
 	try {
 		let result = await serp.search(options);
 
-		console.log('\nYour Query: ', options.qs.q)
-		console.log('find results below\n')
-		console.log(result);
+		// console.log('\nYour Query: ', options.qs.q)
+		// console.log('find results below\n')
+		// console.log(result);
 		
 		return result;
 	}
