@@ -204,15 +204,6 @@ function extractLinks(options, body) {
 
   const $ = cheerio.load(body);
 
-  // if exactQuery option is present then
-  // check if the result is exactly for the provided query
-  // if it is for some modified/suggested query, return empty array
-  if (options.exactQuery) {
-    let query = options.qs.q;
-    let a = $(`div:contains(No results found for ${query})`).text().includes(`No results found for ${query}`);
-    if (a) return { links };
-  }
-
   // Get the links matching to the web sites
   // Update May 2020 : search only the h3. Google changes its CSS name
   // $('body').find('.srg h3').each((i, h3) => {
@@ -221,16 +212,19 @@ function extractLinks(options, body) {
       const href = $(h3).parent().attr('href');
 
       if (href) {
-      	if (!options.noYoutube && !options.noTwitter){
-        	links.push({ url: href, title: $(h3).text() });
-      	}
-      	//check if the link points to youtube, if yes, igonore it
-        else if (href.includes('www.youtube.com') || href.includes('twitter.com')) {
-        	//do nothing, ignore this href
+        let ignore = options.ignore || []
+        let l = ignore.length
+
+        if (l>0) {
+          let flag = 0;
+          for (let i=0; i<l && flag===0; i++) {
+            if (href.includes(ignore[i])) flag=1;
+          }
+
+          if (flag===0) links.push({ url: href, title: $(h3).text() });
         }
-        // push it in case it doesn't refer to youtube
         else {
-        	links.push({ url: href, title: $(h3).text() });
+          links.push({ url: href, title: $(h3).text() });
         }
       }
     }

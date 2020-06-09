@@ -3,11 +3,10 @@ const serp = require('./serp')
 async function getSearch(query) {
 	var options = {
 		host : "google.com",
-		exactQuery: true,
-		noYoutube: true,
-		noTwitter: true,
+		ignore: ['youtube.com', 'twitter.com', 'facebook.com'],
 		qs : {
 			q : `"${query}"`,
+			nfpr: 1, //exclusion of results from an auto-corrected query: 1 for disabled
 			filter : 0,
 			pws : 0,
 		},
@@ -16,11 +15,6 @@ async function getSearch(query) {
 
 	try {
 		let result = await serp.search(options);
-
-		// console.log('\nYour Query: ', options.qs.q)
-		// console.log('find results below\n')
-		// console.log(result);
-		
 		return result;
 	}
 	catch(e) {
