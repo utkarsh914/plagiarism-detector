@@ -12,15 +12,31 @@ router.post('/result', async function(req, res){
 	const q = req.body.query
 	if (!q) return res.status(400).json({error: "empty query sent"})
 
-	const tosearch = q.split('. ')
+	//replace all 3 types of line breaks with a dot
+	q.replace(/(\r\n|\n|\r)/gm, ".")
+	//Replace all multiple white spaces with single space
+	q.replace(/\s+/g, " ")
+	//Replace all multiple dots with single dot
+	q.replace(/\.+/g, ".")
+	//to separate all sentences of the paragraph
+	q.replace(/([.?!])\s*(?=[A-Z])/g, "$1|")
+
+	//array of all sentences of paragraph
+	const tosearch = q.split("|")
+	var length = tosearch.length
+
+	if (length>100) {
+		return res.status(400).json({ error: "Max sentences limit crossed!"})
+	}
+
 	var result = []
 	var count = {
-		total: tosearch.length,
+		total: length,
 		plagiarised: 0
 	}
 	console.log(q, '\n\n', result)
 
-	for (let i=0; i<tosearch.length; i++) {
+	for (let i=0; i<length; i++) {
 		let currQuery = tosearch[i]
 		let a = await search(currQuery)
 		if (a.length>0) {
