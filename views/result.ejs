@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Plagiarism Detector</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/images/m2.png" type="image/x-icon">
+	<link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+	<script src="/css/bootstrap/jquery.min.js"></script>
+	<!-- <script src="/css/bootstrap/popper.min.js"></script> -->
+	<!-- <script src="/css/bootstrap/bootstrap.min.js"></script> -->
+	<style type="text/css">
+
+		.alert-danger { color: #721c24 }
+		a { text-decoration: none; }
+
+		@keyframes animatebottom { 
+			from{ bottom:-20vh; opacity:0 } 
+			to{ bottom:0; opacity:1 }
+		}
+
+		.animate-bottom {
+			position: relative;
+			-webkit-animation-name: animatebottom;
+			-webkit-animation-duration: 0.6s;
+			animation-name: animatebottom;
+			animation-duration: 0.6s
+		}
+		
+	</style>
+</head>
+<body>
+
+	<section id="pageContent" class="animate-bottom">
+		<div class="container py-5">
+			<h1 class="text-center mb-3">Plagiarism Report</h1>
+			<hr>
+			<h5 class="text-center mb-4">Note: Sentences highlighted in red are plagiarised. Clicking on them will open the source.</h5>
+
+			<!-- loop over all cases and render them -->
+			<% if (result) { %>
+
+				<%  result.forEach((r)=> {  %>
+
+					<% if (r.url) { %>
+						<a href="<%= r.url %>">
+							<div class="alert alert-danger mb-1"> <%= r.text %> </div>
+						</a>
+					<%} else { %>
+						<div class="alert alert-success mb-1">
+							<%= r.text %>
+						</div>
+					<% } %>
+
+				<%  })  %>
+
+			<% } %>
+
+			<a href="/"><button class="btn btn-primary mt-4">Go to home</button></a>
+		</div>
+	</section>
+
+</body>
+</html>
