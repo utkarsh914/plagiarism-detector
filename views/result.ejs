@@ -4,10 +4,6 @@
 	<title>Plagiarism Detector</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="/images/m2.png" type="image/x-icon">
-	<link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
-	<script src="/css/bootstrap/jquery.min.js"></script>
-	<!-- <script src="/css/bootstrap/popper.min.js"></script> -->
-	<!-- <script src="/css/bootstrap/bootstrap.min.js"></script> -->
 	<style type="text/css">
 
 		.alert-danger { color: #721c24 }
@@ -27,6 +23,9 @@
 		}
 		
 	</style>
+
+	<link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+
 </head>
 <body>
 
@@ -42,7 +41,7 @@
 				<%  result.forEach((r)=> {  %>
 
 					<% if (r.url) { %>
-						<a href="<%= r.url %>">
+						<a href="<%= r.url %>" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to visit the source">
 							<div class="alert alert-danger mb-1"> <%= r.text %> </div>
 						</a>
 					<%} else { %>
@@ -59,5 +58,13 @@
 		</div>
 	</section>
 
+<script src="/css/bootstrap/jquery.min.js"></script>
+<script src="/css/bootstrap/popper.min.js"></script>
+<script src="/css/bootstrap/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
 </body>
 </html>

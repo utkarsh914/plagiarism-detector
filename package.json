@@ -1,5 +1,5 @@
 {
-  "name": "detect-plagiarism",
+  "name": "plagiarism-detector",
   "version": "1.0.0",
   "description": "Check plagiarism in texts",
   "main": "index.js",
