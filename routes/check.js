@@ -14,6 +14,10 @@ router.post('/result', async function(req, res){
 
 	const tosearch = q.split('. ')
 	var result = []
+	var count = {
+		total: tosearch.length,
+		plagiarised: 0
+	}
 	console.log(q, '\n\n', result)
 
 	for (let i=0; i<tosearch.length; i++) {
@@ -21,11 +25,12 @@ router.post('/result', async function(req, res){
 		let a = await search(currQuery)
 		if (a.length>0) {
 			result.push({ text: currQuery, url: a[0].url })
+			count.plagiarised += 1;
 		}
 		else result.push({ text: currQuery, url: null })
 	}
 
-	res.render('result', {result: result})
+	res.render('result', { result: result, count: count })
 
 })
 

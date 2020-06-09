@@ -8,6 +8,38 @@
 
 		.alert-danger { color: #721c24 }
 		a { text-decoration: none; }
+		div a:hover { text-decoration: none; }
+
+		#pageContent {
+			display: none;
+			min-height: 100vh;
+		}
+		#footer {
+			z-index: 5;
+			position: fixed;
+			bottom: 0;
+			left: 0; right: 0;
+			background-color: #fff;
+		}
+		#loader{
+			display: flex; align-items: center; justify-content: center;
+			position: fixed; top: 0; left: 0; z-index: 999;
+			background: rgba(0,0,0, 0.9);
+			width: 100vw; height: 100vh;
+			overflow: hidden;
+		}
+		#loaderCircle {
+			width: 80px; height: 80px;
+			box-sizing: border-box;
+			border: 10px solid #f3f3f3; border-radius: 50%; border-top: 10px solid rgb(254,0,0); border-left: 10px solid rgb(254,0,0); ;
+			-webkit-animation: spin 2s linear infinite;
+			animation: spin 2s linear infinite;
+		}
+
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
 
 		@keyframes animatebottom { 
 			from{ bottom:-20vh; opacity:0 } 
@@ -27,7 +59,12 @@
 	<link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
 
 </head>
-<body>
+<body onload="stopLoader()">
+
+	<!-- Add loader animation -->
+	<div id="loader">
+		<div id="loaderCircle"></div>
+	</div>
 
 	<section id="pageContent" class="animate-bottom">
 		<div class="container py-5">
@@ -36,17 +73,23 @@
 			<h5 class="text-center mb-4">Note: Sentences highlighted in red are plagiarised. Clicking on them will open the source.</h5>
 
 			<!-- loop over all cases and render them -->
-			<% if (result) { %>
+			<% if (result && count) { %>
 
-				<%  result.forEach((r)=> {  %>
+				<div class="card text-center mb-4">
+					<div class="card-body">
+						<b> Found <%= count.plagiarised %> out of <%= count.total %> sentences plagiarised! </b>
+					</div>
+				</div>
+
+				<%  result.forEach((r, i)=> {  %>
 
 					<% if (r.url) { %>
 						<a href="<%= r.url %>" target="_blank" data-toggle="tooltip" data-placement="top" title="Click to visit the source">
-							<div class="alert alert-danger mb-1"> <%= r.text %> </div>
+							<div class="alert alert-danger mb-1"><b><%= i+1 %>.</b> <%= r.text %> </div>
 						</a>
 					<%} else { %>
-						<div class="alert alert-success mb-1">
-							<%= r.text %>
+						<div class="alert alert-success mb-1" data-toggle="tooltip" data-placement="top" title="Unique">
+							<b><%= i+1 %>.</b> <%= r.text %>
 						</div>
 					<% } %>
 
@@ -54,14 +97,39 @@
 
 			<% } %>
 
-			<a href="/"><button class="btn btn-primary mt-4">Go to home</button></a>
+			<a href="/"><button class="btn btn-primary mt-4 mb-4" onclick="startLoader()">Go to home</button></a>
+
+			<div class="card mb-5">
+				<div class="card-body text-center">
+					<b>This tool showing a sentence as plagiarised doesn't necessarily mean that it actually is.</b><br>
+					<b>Maybe it is a coincidence that both the authors wrote the exact same sentence</b>
+				</div>
+			</div>
+
 		</div>
+
+		<div id="footer" class="text-center">
+			<hr>
+			<p>Made with ❤ by <b>Utkarsh Tiwari</b></p>
+		</div>
+
 	</section>
 
 <script src="/css/bootstrap/jquery.min.js"></script>
 <script src="/css/bootstrap/popper.min.js"></script>
 <script src="/css/bootstrap/bootstrap.min.js"></script>
 <script>
+
+	function startLoader(){
+		document.getElementById("loader").style.display = "flex";
+		document.getElementById("pageContent").style.display = "none";
+	}
+
+	function stopLoader(){
+		document.getElementById("loader").style.display = "none";
+		document.getElementById("pageContent").style.display = "block";
+	}
+
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip()
   })

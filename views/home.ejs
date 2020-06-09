@@ -9,7 +9,18 @@
 	<!-- <script src="/css/bootstrap/bootstrap.min.js"></script> -->
 	<style type="text/css">
 		.alert-danger { color: #721c24 }
-		#pageContent {display: none;}
+		#pageContent {
+			display: none;
+			min-height: 100vh;
+			position: relative;
+		}
+		#footer {
+			z-index: 5;
+			position: fixed;
+			bottom: 0;
+			left: 0; right: 0;
+			background-color: #fff;
+		}
 		#loader{
 			display: flex; align-items: center; justify-content: center;
 			position: fixed; top: 0; left: 0; z-index: 999;
@@ -68,6 +79,12 @@
 				</form>
 
 		</div>
+
+		<div id="footer" class="text-center">
+			<hr>
+			<p>Made with ❤ by <b>Utkarsh Tiwari</b></p>
+		</div>
+
 	</section>
 
 <script type="text/javascript">
